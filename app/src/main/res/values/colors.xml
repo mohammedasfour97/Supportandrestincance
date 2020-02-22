@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">	#0770D6 </color>   <!--3498DB-->
+    <color name="colorPrimaryDark">#303233</color>  <!--2C3E50-->
+    <color name="colorAccent">#E9E9E9</color>
+    <color name="background">#CCDEEA</color>
+
+    <!-- dots inactive colors -->
+
+    <!-- dots active colors -->
+    <color name="white">#ffffff</color>
+
+    <!-- dots active colors -->
+
+</resources>
+

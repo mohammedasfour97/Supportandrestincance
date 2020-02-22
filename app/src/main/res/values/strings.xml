@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">Forex Sniper</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_fav">Favourites</string>
+    <string name="menu_r_s">Support &amp; resistance</string>
+    <string name="menu_trade_on">How to trade</string>
+    <string name="menu_aboutus">About us</string>
+    <string name="menu_contact_us">Contact us</string>
+    <string name="symbol">Symbol :</string>
+    <string name="d1h4">Time Frame :</string>
+    <string name="sr">Trade on :</string>
+    <string name="price">Price :</string>
+    <string name="date">Date :</string>
+    <string name="time">Time :</string>
+    <string name="error_occured">Error occurred while loading data</string>
+    <string name="about_us">Support versus resistance :"\n""\n"
+       A support level is a level where the price tends to find support as it falls. This means that the price is more likely to "bounce" off this level rather than break through it. However, once the price has breached this level, by an amount exceeding some noise, it is likely to continue falling until meeting another support level.
+A resistance level is the opposite of a support level. It is where the price tends to find resistance as it rises. Again, this means that the price is more likely to "bounce" off this level rather than break through it. However, once the price has breached this level, by an amount exceeding some noise, it is likely to continue rising until meeting another resistance level.
+        Currencies tend to move in up trends, down trends or range. Trends may be short term or long term, but they will not keep going in one direction indefinitely, and they will frequently encounter either support or resistance.
+
+"\n""\n""\n""\n"The Importance Of Support And Resistance :"\n""\n"Support and resistance are important tools that almost every technical analyst will use. By taking the time to identify these crucial levels, investors can identify ranges that currencies are trading in and make better-informed transactions.
+
+"\n""\n""\n""\n"Technical Analysis :"\n""\n"Support and resistance levels are a key component of technical analysis, a practical approach used by many traders.Technical analysts leverage charts and other tools to study market history and identify patterns that may help provide insight into future activity, although past performance is no guarantee of future results.
+        "\n""\n"This method, which looks into the supply and demand surrounding a particular security or currency, is concerned with what actually happens, instead of seeking an explanation for why something happens. For example, a technical analyst would focus on the price of a currency, instead of what fundamental analysts believe it "should" be worth.
+        "\n""\n"Technical analysis rests on a handful of basic assumptions, one being that history has a tendency to repeat itself.
+
+
+
+"\n""\n""\n""\n"Trading Based on Support and Resistance :"\n""\n"The basic trading method for using support and resistance is to buy near support in uptrends, ranges, or chart patterns, and to sell/short-sell near resistance in downtrends, ranges, and chart patterns.
+
+"\n""\n"It helps to isolate a longer-term trend, even when trading a range or chart pattern. The trend provides guidance on the direction to trade in. For example, if the trend is down but then a range develops, preference should be given to short-selling at range resistance instead of buying at range support. The downtrend lets us know that going short has a better probability of producing a profit than buying. If the trend is up and then a triangle pattern develops, favor buying near support of the triangle pattern.
+
+"\n""\n"Buying near support or selling near resistance can pay off, but there is no assurance that the support or resistance will hold. Therefore, consider waiting for some confirmation that the market is still respecting that area.
+
+"\n""\n"If buying near support, wait for a consolidation in the support area and then buy when the price breaks above the high of that small consolidation area. When the price makes a move like that it lets us know the price is still respecting the support area, and also that the price is starting to move higher off of support. The same concept applies to selling at resistance. Wait for a consolidation near the resistance area, then enter a short trade when the price drops below the low of the small consolidation.
+"\n""\n"When buying, place a stop loss several cents below support, and when shorting place a stop loss several cents above resistance.
+
+"\n""\n"If waiting for a consolidation, place a stop loss a couple cents (or ticks or pips) below the consolidation when buying. When selling, the stop loss goes a couple cents above the consolidation.
+
+       "\n""\n"When entering a trade, have a target price in mind for a profitable exit. If buying near support, consider exiting just before the price reaches a strong resistance level. If shorting at resistance, exit just before the price reaches strong support. You can also exit at minor support and resistance levels.
+</string>
+
+    <string name="trade_on">Trading on the support and resistance in the Forex market :"\n""\n"One of the oldest methods of trading and the strongest is trading in the support and resistance in Forex, which is part of the classical analysis, and it is one of the most famous ways to identify points of entry and exit.
+Here in the program we will send you a message when every support or resistance observed by "Sniper" This will make you feel all the movements of the market and that on 28 pairs of Currency + gold and petroleum.
+You will not miss important support or strong strength other than what you are observing with a moment\'s notice, within a time frame (4 hours + 1 day).
+However, we believe that it is not necessary to rely solely on total dependence, but prefer to add to it the tools you prefer or prefer in Forex trading, or add the reflective models or use Japanese candlesticks to make sure that the trend changes.
+And in case of breach of support or breach of resistance that we have sent to you before it means the continuation of the trend after breaking the support or resistance.
+Therefore, to make sure for the second time that this program just clarify the points (resistance and support) and you open the chart and the use of indicators you prefer to reflect the trend or search for Japanese candles that confirmed the reversal of direction such as (hammer).
+And good luck
+</string>
+
+</resources>
