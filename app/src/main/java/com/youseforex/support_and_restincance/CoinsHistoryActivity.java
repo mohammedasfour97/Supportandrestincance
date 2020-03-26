@@ -1,8 +1,10 @@
 package com.youseforex.support_and_restincance;
 
 import android.app.NotificationManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.service.notification.StatusBarNotification;
@@ -11,7 +13,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -23,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -38,7 +40,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CoinsHistoryActivity extends AppCompatActivity
+public class CoinsHistoryActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private RecyclerView recyclerView;
@@ -77,6 +79,7 @@ public class CoinsHistoryActivity extends AppCompatActivity
         initRecyclerView();
 
         initDrawer();
+
 
         for (String coin : tinyDB.getListString("main_notify")){
             if (coin.contains(intent.getStringExtra("coin"))){
@@ -161,47 +164,47 @@ public class CoinsHistoryActivity extends AppCompatActivity
         itemsList.clear();
         mAdapter.notifyDataSetChanged();
 
+        if (checkInternetConnection()) {
+            showProgressDialog();
 
 
-        StringRequest strre = new StringRequest(Request.Method.GET,
-                SingletonRequestQueue.getInstance(CoinsHistoryActivity.this).getUrl() + "doupdate.php",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if (!response.equals("")) {
+            StringRequest strre = new StringRequest(Request.Method.GET,
+                    SingletonRequestQueue.getInstance(CoinsHistoryActivity.this).getUrl() + "doupdate.php",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            if (!response.equals("")) {
 
-                            recyclerView.setVisibility(View.GONE);
+                                recyclerView.setVisibility(View.GONE);
 
-                            Toast.makeText(CoinsHistoryActivity.this, "Application is stopped , please update it", Toast.LENGTH_LONG).show();
+                                Toast.makeText(CoinsHistoryActivity.this, "Application is stopped , please update it", Toast.LENGTH_LONG).show();
+
+                            }
 
                         }
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError e) {
-                e.printStackTrace();
-            }
-        });
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError e) {
+                    e.printStackTrace();
+                }
+            });
 
 
-        SingletonRequestQueue.getInstance(CoinsHistoryActivity.this).getRequestQueue().add(strre);
+            SingletonRequestQueue.getInstance(CoinsHistoryActivity.this).getRequestQueue().add(strre);
 
 
-
-        JsonArrayRequest strreq = new JsonArrayRequest(Request.Method.GET,
-                SingletonRequestQueue.getInstance(CoinsHistoryActivity.this).getUrl() + "api.php?s=" +
-                        intent.getStringExtra("coin"),
-                null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        //    baseActivity.showProgress(R.string.loading);
-                        for (int a = 0 ; a < response.length() ; a++){
-                            try {
-                                JSONObject jsonObject = response.getJSONObject(a);
+            JsonArrayRequest strreq = new JsonArrayRequest(Request.Method.GET,
+                    SingletonRequestQueue.getInstance(CoinsHistoryActivity.this).getUrl() + "api/getdata.php?start=15&s=" +
+                            intent.getStringExtra("coin"),
+                    null,
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            for (int a = 0; a < response.length(); a++) {
+                                try {
+                                    JSONObject jsonObject = response.getJSONObject(a);
                                     CoinHistory coinHistory = new CoinHistory();
-                                    coinHistory.setIndex(jsonObject.getString("index"));
+                                    coinHistory.setIndex(jsonObject.getString("indx"));
                                     coinHistory.setD1h4(jsonObject.getString("d1h4"));
                                     coinHistory.setDate(jsonObject.getString("date"));
                                     coinHistory.setPrice(jsonObject.getString("price"));
@@ -210,21 +213,30 @@ public class CoinsHistoryActivity extends AppCompatActivity
                                     coinHistory.setTime(jsonObject.getString("time"));
                                     itemsList.add(coinHistory);
 
-                            } catch (JSONException e) {
-                                Toast.makeText(CoinsHistoryActivity.this, getResources().getString(R.string.error_occured), Toast.LENGTH_SHORT).show();
-                                e.printStackTrace();
+                                } catch (JSONException e) {
+                                    Toast.makeText(CoinsHistoryActivity.this, getResources().getString(R.string.error_occured), Toast.LENGTH_SHORT).show();
+                                    e.printStackTrace();
+                                }
                             }
+                            mAdapter.notifyDataSetChanged();
+
+                            hideProgressDialog();
+
                         }
-                        mAdapter.notifyDataSetChanged();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError e) {
-                Toast.makeText(CoinsHistoryActivity.this, getResources().getString(R.string.error_occured), Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
-            }
-        });
-        SingletonRequestQueue.getInstance(CoinsHistoryActivity.this).getRequestQueue().add(strreq);
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError e) {
+                    Toast.makeText(CoinsHistoryActivity.this, getResources().getString(R.string.error_occured), Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            });
+            strreq.setRetryPolicy(new DefaultRetryPolicy(
+                    10000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            SingletonRequestQueue.getInstance(CoinsHistoryActivity.this).getRequestQueue().add(strreq);
+
+        }
 
     }
 
@@ -346,6 +358,21 @@ public class CoinsHistoryActivity extends AppCompatActivity
             Intent intent = new Intent(CoinsHistoryActivity.this , ActivityAboutUs.class);
             intent.putExtra("text" , R.string.trade_on);
             startActivity(intent);
+        }
+        else if (id == R.id.notif_his) {
+
+            Intent intent = new Intent(CoinsHistoryActivity.this , NotificationHistoryActivity.class);
+            intent.putExtra("text" , R.string.trade_on);
+            startActivity(intent);
+        }
+        else if (id==R.id.rate_us){
+
+            try{
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id="+getPackageName())));
+            }
+            catch (ActivityNotFoundException e){
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id="+getPackageName())));
+            }
         }
 
 

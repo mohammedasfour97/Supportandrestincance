@@ -8,6 +8,18 @@ public class CoinHistory {
         return index;
     }
 
+    public CoinHistory( String symbol, String d1h4, String sr, String price, String date, String time) {
+        this.symbol = symbol;
+        this.d1h4 = d1h4;
+        this.sr = sr;
+        this.price = price;
+        this.date = date;
+        this.time = time;
+    }
+
+    public CoinHistory() {
+    }
+
     public void setIndex(String index) {
         this.index = index;
     }

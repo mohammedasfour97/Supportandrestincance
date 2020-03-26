@@ -4,9 +4,9 @@ android {
     signingConfigs {
         release {
             storeFile file('C:\\Users\\20120\\AndroidStudioProjects\\Supportandrestincance\\key.jks')
-            storePassword 'forex'
+            storePassword 'forexforex'
             keyAlias = 'key0'
-            keyPassword 'forex'
+            keyPassword 'forexforex'
         }
     }
     compileSdkVersion 28
@@ -14,8 +14,8 @@ android {
         applicationId "com.youseforex.support_and_restincance"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 9
-        versionName "1.8"
+        versionCode 11
+        versionName "2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.debug
     }

@@ -12,6 +12,10 @@
             android:id="@+id/nav_fav"
             android:icon="@drawable/ic_star_black_24dp"
             android:title="@string/menu_fav" />
+        <item
+            android:id="@+id/notif_his"
+            android:icon="@drawable/ic_notifications_black_24dp"
+            android:title="@string/menu_notif_his" />
 
         <item
             android:id="@+id/supp_res"
@@ -21,6 +25,10 @@
             android:id="@+id/trade_on"
             android:icon="@drawable/ic_assignment_black_24dp"
             android:title="@string/menu_trade_on" />
+        <item
+            android:id="@+id/rate_us"
+            android:icon="@drawable/ic_rate_review_black_24dp"
+            android:title="@string/menu_rate_us" />
         <item
             android:id="@+id/contact_us"
             android:icon="@drawable/ic_call_black_24dp"

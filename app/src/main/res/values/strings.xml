@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Forex Sniper</string>
+    <string name="app_name">Forex Sniper PRO</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">Navigation header</string>
@@ -9,12 +9,21 @@
     <string name="menu_trade_on">How to trade</string>
     <string name="menu_aboutus">About us</string>
     <string name="menu_contact_us">Contact us</string>
+    <string name="menu_notif_his">Notifications History</string>
+    <string name="menu_rate_us">Rate us ⭐⭐⭐⭐⭐</string>
+    <string name="history">History</string>
     <string name="symbol">Symbol :</string>
     <string name="d1h4">Time Frame :</string>
     <string name="sr">Trade on :</string>
     <string name="price">Price :</string>
     <string name="date">Date :</string>
     <string name="time">Time :</string>
+    <string name="exit_messg">Do you want to exit from the app ?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="loading">Loading …</string>
+    <string name="button_ok">OK</string>
+    <string name="internet_connection_failed">No internet connection</string>
     <string name="error_occured">Error occurred while loading data</string>
     <string name="about_us">Support versus resistance :"\n""\n"
        A support level is a level where the price tends to find support as it falls. This means that the price is more likely to "bounce" off this level rather than break through it. However, once the price has breached this level, by an amount exceeding some noise, it is likely to continue falling until meeting another support level.

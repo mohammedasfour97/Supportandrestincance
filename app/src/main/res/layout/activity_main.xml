@@ -29,16 +29,17 @@
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_main"
-            app:menu="@menu/activity_main_drawer" />
+            app:menu="@menu/activity_main_drawer"
+            app:itemIconTint="@color/colorPrimary"/>
 
     </android.support.v4.widget.DrawerLayout>
 
-    <com.startapp.android.publish.ads.banner.Banner
+<!--    <com.startapp.android.publish.ads.banner.Banner
         android:id="@+id/startAppBanner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_gravity="bottom|center_horizontal" />
 
-
+-->
 </android.support.design.widget.CoordinatorLayout>

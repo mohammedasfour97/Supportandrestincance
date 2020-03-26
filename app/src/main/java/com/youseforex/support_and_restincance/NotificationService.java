@@ -8,17 +8,16 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.media.RingtoneManager;
+import android.media.AudioAttributes;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -169,7 +168,6 @@ public class NotificationService extends Service {
                                     }
 
 
-                                    Log.d("ppppppp", String.valueOf(jsonObject.getString("index")));
                                 } catch (JSONException e) {
                                     Toast.makeText(NotificationService.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                                     e.printStackTrace();
@@ -183,10 +181,12 @@ public class NotificationService extends Service {
             public void onErrorResponse(VolleyError e) {
             }
         });
-
+        strreq.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         SingletonRequestQueue.getInstance(NotificationService.this).getRequestQueue().add(strreq);
     }
-
 
     private void checkIfNotified(JSONObject jsonObject){
 
@@ -205,6 +205,91 @@ public class NotificationService extends Service {
 
         if (tinyDB.getListString("fav").contains(symbol)) {
             Log.d("contains_symbol", index);
+
+
+            ArrayList<String> state_list;
+            ArrayList<String> timeframe_list;
+            ArrayList<String> date_list;
+            ArrayList<String> price_list;
+            ArrayList<String> symbol_list;
+            ArrayList<String> time_list;
+
+
+            if (tinyDB.getListString("state_list") == null){
+                state_list = new ArrayList<>();
+                state_list.add(state);
+                tinyDB.putListString("state_list" , state_list);
+            }
+            else {
+                state_list = tinyDB.getListString("state_list");
+                state_list.add(state);
+                tinyDB.putListString("state_list" , state_list);
+            }
+
+
+
+            if (tinyDB.getListString("timeframe_list") == null){
+                timeframe_list = new ArrayList<>();
+                timeframe_list.add(timeframe);
+                tinyDB.putListString("timeframe_list" , timeframe_list);
+            }
+            else {
+                timeframe_list = tinyDB.getListString("timeframe_list");
+                timeframe_list.add(timeframe);
+                tinyDB.putListString("timeframe_list" , timeframe_list);
+            }
+
+
+
+            if (tinyDB.getListString("date_list") == null){
+                date_list = new ArrayList<>();
+                date_list.add(date);
+                tinyDB.putListString("date_list" , date_list);
+            }
+            else {
+                date_list = tinyDB.getListString("date_list");
+                date_list.add(date);
+                tinyDB.putListString("date_list" , date_list);
+            }
+
+
+
+            if (tinyDB.getListString("price_list") == null){
+                price_list = new ArrayList<>();
+                price_list.add(price);
+                tinyDB.putListString("price_list" , price_list);
+            }
+            else {
+                price_list = tinyDB.getListString("price_list");
+                price_list.add(price);
+                tinyDB.putListString("price_list" , price_list);
+            }
+
+
+
+            if (tinyDB.getListString("symbol_list") == null){
+                symbol_list = new ArrayList<>();
+                symbol_list.add(symbol);
+                tinyDB.putListString("symbol_list" , symbol_list);
+            }
+            else {
+                symbol_list = tinyDB.getListString("symbol_list");
+                symbol_list.add(symbol);
+                tinyDB.putListString("symbol_list" , symbol_list);
+            }
+
+
+
+            if (tinyDB.getListString("time_list") == null){
+                time_list = new ArrayList<>();
+                time_list.add(time);
+                tinyDB.putListString("time_list" , time_list);
+            }
+            else {
+                time_list = tinyDB.getListString("time_list");
+                time_list.add(time);
+                tinyDB.putListString("time_list" , time_list);
+            }
 
             checkIfNotifiedd(state , timeframe , index , date , price ,  symbol , time);
         }
@@ -235,7 +320,10 @@ public class NotificationService extends Service {
                 }
 
             });
-
+            strreq.setRetryPolicy(new DefaultRetryPolicy(
+                    10000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             SingletonRequestQueue.getInstance(NotificationService.this).getRequestQueue().add(strreq);
         }
 
@@ -256,6 +344,7 @@ public class NotificationService extends Service {
     private void makeNotification(String state , String timrframe , String index , String date , String price , String symbol , String time){
 
         ArrayList<String> list;
+
         if (tinyDB.getListString("main_notify") == null){
             list = new ArrayList<>();
             list.add(symbol + index);
@@ -267,16 +356,16 @@ public class NotificationService extends Service {
             tinyDB.putListString("main_notify" , list);
         }
 
+
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
         mBuilder.setSmallIcon(R.drawable.logo);
         mBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_foreground));
         mBuilder.setContentTitle("Support and Resistance");
         mBuilder.setContentText("Symbol : " + symbol + "  ||  " + "Time frame :" + timrframe);
         mBuilder.setAutoCancel(true);
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri alarmSound = Uri.parse("android.resource://" + getPackageName() + "/raw/eventually");
         mBuilder.setSound(alarmSound);
 
-        mBuilder.setDefaults(Notification.DEFAULT_SOUND|Notification.DEFAULT_LIGHTS| Notification.DEFAULT_VIBRATE);
         mBuilder.setVibrate(new long[]{0, 500, 1000});
 
        /* Intent intent = new Intent(this, CoinsHistoryActivity.class);
@@ -306,6 +395,12 @@ public class NotificationService extends Service {
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
            mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
+            AudioAttributes att = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                    .build();
+            mChannel.setSound(alarmSound , att);
+            mChannel.enableVibration(true);
            mNotificationManager.createNotificationChannel(mChannel);
             Notification notification = new Notification.Builder(NotificationService.this)
                     .setSmallIcon(R.drawable.logo)
@@ -317,6 +412,7 @@ public class NotificationService extends Service {
                     .setAutoCancel(true)
                     .setSound(alarmSound)
                     .build();
+
             mNotificationManager.notify(Integer.parseInt(index), notification);
         }
 

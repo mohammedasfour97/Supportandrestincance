@@ -1,7 +1,10 @@
 package com.youseforex.support_and_restincance;
 
 import android.app.ActivityManager;
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -26,7 +29,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.startapp.android.publish.adsCommon.StartAppAd;
 import com.startapp.android.publish.adsCommon.StartAppSDK;
@@ -135,6 +137,47 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         }
+
+    /*    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+        Uri alarmSound = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.eventually);
+        NotificationChannel mChannel;
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (mNotificationManager != null) {
+            List<NotificationChannel> channelList = mNotificationManager.getNotificationChannels();
+
+            for (int i = 0; channelList != null && i < channelList.size(); i++) {
+                mNotificationManager.deleteNotificationChannel(channelList.get(i).getId());
+            }
+        }
+
+        int notifyID = 1;
+        String CHANNEL_ID = "my_channel_01";// The id of the channel.
+        CharSequence name = "channel";// The user-visible name of the channel.
+        int importance = NotificationManager.IMPORTANCE_HIGH;
+
+            mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .build();
+            mChannel.setSound(alarmSound, audioAttributes);
+            mChannel.enableVibration(true);
+            mNotificationManager.createNotificationChannel(mChannel);
+            Notification notification = new Notification.Builder(this)
+                    .setSmallIcon(R.drawable.logo)
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_foreground))
+                    .setContentTitle("Support and Resistance")
+                    .setChannelId(CHANNEL_ID)
+                    .setContentText("ggggg")
+                    .setAutoCancel(true)
+                    .build();
+
+            mNotificationManager.notify(1, notification);
+
+        }
+        */
 
     }
 
@@ -455,7 +498,18 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this , R.style.MyAlertDialogStyle);
+            builder.setMessage(getString(R.string.exit_messg));
+            builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                    MainActivity.super.onBackPressed();
+                }
+            });
+            builder.setNegativeButton(R.string.no , null);
+            builder.show();
         }
     }
 
@@ -493,6 +547,21 @@ public class MainActivity extends AppCompatActivity
             intent.putExtra("text" , R.string.trade_on);
             startActivity(intent);
         }
+        else if (id == R.id.notif_his) {
+
+            Intent intent = new Intent(MainActivity.this , NotificationHistoryActivity.class);
+            intent.putExtra("text" , R.string.trade_on);
+            startActivity(intent);
+        }
+        else if (id==R.id.rate_us){
+
+            try{
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id="+getPackageName())));
+            }
+            catch (ActivityNotFoundException e){
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id="+getPackageName())));
+            }
+        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -510,4 +579,5 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         initRecyclerView();
     }
+
 }

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -13,9 +12,8 @@ import com.startapp.android.publish.adsCommon.StartAppSDK;
 
 import java.util.ArrayList;
 import java.util.Timer;
-import java.util.TimerTask;
 
-public class CoinHistoryItemActivity extends AppCompatActivity {
+public class CoinHistoryItemActivity extends BaseActivity {
 
     private TextView state , timeframe , index , date , price , symbol, time;
     private Intent intent ;
@@ -31,7 +29,7 @@ public class CoinHistoryItemActivity extends AppCompatActivity {
         StartAppAd.disableSplash();
 
         StartAppAd startAppAd = new StartAppAd(this);
-        startAppAd.loadAd(StartAppAd.AdMode.AUTOMATIC);
+        startAppAd.loadAd(StartAppAd.AdMode.VIDEO);
         startAppAd.showAd(); // show the ad
 
        // StartAppAd.showAd(this);
@@ -46,7 +44,7 @@ public class CoinHistoryItemActivity extends AppCompatActivity {
 
         intent = getIntent();
 
-        symbol.setText(intent.getStringExtra("symbol").substring(0, 5));
+        symbol.setText(intent.getStringExtra("symbol").substring(0, 6));
         Log.d("cftyh", intent.getStringExtra("symbol"));
         timeframe.setText(intent.getStringExtra("timrframe"));
         state.setText(intent.getStringExtra("state"));
