@@ -3,7 +3,7 @@ package com.youseforex.support_and_restincance;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 import android.widget.TextView;
 

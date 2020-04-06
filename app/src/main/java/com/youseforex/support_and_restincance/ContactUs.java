@@ -2,7 +2,7 @@ package com.youseforex.support_and_restincance;
 
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 
 public class ContactUs extends AppCompatActivity {

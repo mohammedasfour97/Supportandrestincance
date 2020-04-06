@@ -3,16 +3,16 @@ package com.youseforex.support_and_restincance;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.Nullable;
+import com.google.android.material.navigation.NavigationView;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -20,14 +20,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.startapp.android.publish.adsCommon.StartAppAd;
 import com.startapp.android.publish.adsCommon.StartAppSDK;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NotificationHistoryActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class NotificationHistoryActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private RecyclerView recyclerView;
     private List<CoinHistory> itemsList;
@@ -116,7 +126,7 @@ public class NotificationHistoryActivity extends AppCompatActivity implements Na
 
         itemsList.clear();
 
-        if (tinyDB.getListString("state_list") != null){
+   /*     if (tinyDB.getListString("state_list") != null){
 
             ArrayList<String> state_list = tinyDB.getListString("state_list");
             ArrayList<String> timeframe_list= tinyDB.getListString("timeframe_list");
@@ -138,7 +148,54 @@ public class NotificationHistoryActivity extends AppCompatActivity implements Na
             mAdapter.notifyDataSetChanged();
 
         }
+*/
+        if (checkInternetConnection()) {
+            showProgressDialog();
 
+            JsonArrayRequest strreq = new JsonArrayRequest(Request.Method.GET,
+                    SingletonRequestQueue.getInstance(NotificationHistoryActivity.this).getUrl() + "api/getdata.php?start=20",
+                    null,
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            for (int a = 0; a < response.length(); a++) {
+                                try {
+                                    JSONObject jsonObject = response.getJSONObject(a);
+                                    CoinHistory coinHistory = new CoinHistory();
+                                    coinHistory.setIndex(jsonObject.getString("indx"));
+                                    coinHistory.setD1h4(jsonObject.getString("d1h4"));
+                                    coinHistory.setDate(jsonObject.getString("date"));
+                                    coinHistory.setPrice(jsonObject.getString("price"));
+                                    coinHistory.setSr(jsonObject.getString("sr"));
+                                    coinHistory.setSymbol(jsonObject.getString("symbol"));
+                                    coinHistory.setTime(jsonObject.getString("time"));
+                                    itemsList.add(coinHistory);
+
+                                } catch (JSONException e) {
+                                    Toast.makeText(NotificationHistoryActivity.this, getResources().getString(R.string.error_occured), Toast.LENGTH_SHORT).show();
+                                    e.printStackTrace();
+                                }
+                            }
+                            mAdapter.notifyDataSetChanged();
+
+                            hideProgressDialog();
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError e) {
+                    Toast.makeText(NotificationHistoryActivity.this, getResources().getString(R.string.error_occured), Toast.LENGTH_SHORT).show();
+                    hideProgressDialog();
+                    e.printStackTrace();
+                }
+            });
+            strreq.setRetryPolicy(new DefaultRetryPolicy(
+                    10000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            SingletonRequestQueue.getInstance(NotificationHistoryActivity.this).getRequestQueue().add(strreq);
+
+        }
     }
 
     public class NotificationHistoryActivityAdapter extends RecyclerView.Adapter<NotificationHistoryActivity.NotificationHistoryActivityAdapter.MyViewHolder> {
@@ -190,7 +247,7 @@ public class NotificationHistoryActivity extends AppCompatActivity implements Na
             holder.date.setText(coin.getDate());
             holder.price.setText(coin.getPrice());
 
-            if (coin.getSr().equals("Support") || coin.getSr().equals("support")) {
+            if (coin.getSr().equals("S") || coin.getSr().equals("s")) {
                 holder.sr.setText("Support");
             } else {
                 holder.sr.setText("Resistance");
